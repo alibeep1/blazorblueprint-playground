@@ -1,0 +1,735 @@
+@inherits LayoutComponentBase
+
+<BbSidebarProvider HeightClass="h-dvh" CookieKey=@(null)>
+    @* Sidebar *@
+    <BbSidebar Collapsible="false">
+        <BbSidebarHeader>
+            <div class="flex items-center gap-2 px-3 h-12">
+                <div class="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                    <LucideIcon Name="square-check" class="h-4 w-4" />
+                </div>
+                <span class="text-sm font-semibold">TaskFlow</span>
+            </div>
+        </BbSidebarHeader>
+        <BbSidebarContent Class="flex-1 overflow-auto px-2">
+            @* Search *@
+            <div class="px-1 pb-2">
+                <BbInput Placeholder="Search tasks..." Class="h-8 text-xs bg-sidebar-accent/50" />
+            </div>
+
+            <BbSidebarGroup>
+                <BbCollapsible DefaultOpen="true">
+                    <BbCollapsibleTrigger AsChild="false" Class="w-full">
+                        <BbSidebarGroupLabel Class="cursor-pointer hover:bg-sidebar-accent/50 rounded-md">
+                            <LucideIcon Name="chevron-down" class="h-3.5 w-3.5 mr-1" />
+                            Favorites
+                        </BbSidebarGroupLabel>
+                    </BbCollapsibleTrigger>
+                    <BbCollapsibleContent>
+                        <BbSidebarMenu>
+                            <BbSidebarMenuItem>
+                                <BbSidebarMenuButton IsActive="true" Class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                                    <span class="h-2 w-2 rounded-full bg-blue-500 shrink-0"></span>
+                                    <span>Project Alpha</span>
+                                    <BbBadge Variant="BadgeVariant.Secondary" Class="ml-auto h-5 px-1.5 text-[10px]">8</BbBadge>
+                                </BbSidebarMenuButton>
+                            </BbSidebarMenuItem>
+                            <BbSidebarMenuItem>
+                                <BbSidebarMenuButton Class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                                    <span class="h-2 w-2 rounded-full bg-green-500 shrink-0"></span>
+                                    <span>Website Redesign</span>
+                                    <BbBadge Variant="BadgeVariant.Secondary" Class="ml-auto h-5 px-1.5 text-[10px]">3</BbBadge>
+                                </BbSidebarMenuButton>
+                            </BbSidebarMenuItem>
+                        </BbSidebarMenu>
+                    </BbCollapsibleContent>
+                </BbCollapsible>
+            </BbSidebarGroup>
+
+            <BbSidebarGroup>
+                <BbCollapsible DefaultOpen="true">
+                    <BbCollapsibleTrigger AsChild="false" Class="w-full">
+                        <BbSidebarGroupLabel Class="cursor-pointer hover:bg-sidebar-accent/50 rounded-md">
+                            <LucideIcon Name="chevron-down" class="h-3.5 w-3.5 mr-1" />
+                            Projects
+                        </BbSidebarGroupLabel>
+                    </BbCollapsibleTrigger>
+                    <BbCollapsibleContent>
+                        <BbSidebarMenu>
+                            <BbSidebarMenuItem>
+                                <BbSidebarMenuButton Class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                                    <span class="h-2 w-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <span>Mobile App</span>
+                                </BbSidebarMenuButton>
+                            </BbSidebarMenuItem>
+                            <BbSidebarMenuItem>
+                                <BbSidebarMenuButton Class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                                    <span class="h-2 w-2 rounded-full bg-purple-500 shrink-0"></span>
+                                    <span>API Integration</span>
+                                </BbSidebarMenuButton>
+                            </BbSidebarMenuItem>
+                            <BbSidebarMenuItem>
+                                <BbSidebarMenuButton Class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                                    <span class="h-2 w-2 rounded-full bg-pink-500 shrink-0"></span>
+                                    <span>Marketing</span>
+                                </BbSidebarMenuButton>
+                            </BbSidebarMenuItem>
+                        </BbSidebarMenu>
+                    </BbCollapsibleContent>
+                </BbCollapsible>
+            </BbSidebarGroup>
+
+        </BbSidebarContent>
+        @* Calendar Widget *@
+        <div class="shrink-0 px-3 pb-2">
+            <span class="text-xs font-medium text-sidebar-foreground/70 px-1">Calendar</span>
+            <div class="flex justify-center mt-1">
+                <BbCalendar @bind-Selected="_selectedDate" MinDate="DateTime.Today" ShowMonthYearDropdowns="false" class="rounded-md border bg-background p-2" />
+            </div>
+        </div>
+        <BbSidebarFooter>
+            <div class="px-3 py-2">
+                <BbButton Variant="ButtonVariant.Outline" Class="w-full h-8 text-xs">
+                    <LucideIcon Name="plus" class="mr-2 h-3.5 w-3.5" />
+                    Add Project
+                </BbButton>
+            </div>
+        </BbSidebarFooter>
+    </BbSidebar>
+
+    @* Main Content *@
+    <BbSidebarInset Class="flex flex-col bg-background min-w-0">
+        @* Top Bar *@
+        <header class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+            <div class="flex items-center gap-2">
+                <BbSidebarTrigger Class="h-8 w-8 md:hidden">
+                    <LucideIcon Name="menu" class="h-4 w-4" />
+                </BbSidebarTrigger>
+                <BbBreadcrumb>
+                    <BbBreadcrumbList>
+                        <BbBreadcrumbItem>
+                            <BbBreadcrumbLink Href="#">Workspace</BbBreadcrumbLink>
+                        </BbBreadcrumbItem>
+                        <BbBreadcrumbSeparator />
+                        <BbBreadcrumbItem>
+                            <BbBreadcrumbPage class="flex items-center gap-1.5">
+                                Project Alpha
+                                <LucideIcon Name="star" class="h-3.5 w-3.5 text-yellow-500 fill-yellow-500" />
+                            </BbBreadcrumbPage>
+                        </BbBreadcrumbItem>
+                    </BbBreadcrumbList>
+                </BbBreadcrumb>
+            </div>
+            <div class="flex items-center gap-2">
+                <BbTabs @bind-Value="_viewMode">
+                    <BbTabsList Class="h-8">
+                        <BbTabsTrigger Value="list" Class="text-xs px-3">
+                            <LucideIcon Name="list" class="h-3.5 w-3.5 mr-1" />
+                            List
+                        </BbTabsTrigger>
+                        <BbTabsTrigger Value="board" Class="text-xs px-3">
+                            <LucideIcon Name="kanban" class="h-3.5 w-3.5 mr-1" />
+                            Board
+                        </BbTabsTrigger>
+                    </BbTabsList>
+                </BbTabs>
+            </div>
+        </header>
+
+        @* Content Area *@
+        <div class="flex-1 min-h-0 overflow-auto px-4 py-4 space-y-6">
+            @* Date Heading *@
+            <h2 class="text-lg font-semibold">@DateHeading</h2>
+
+            @if (_selectedDate?.Date != DateTime.Today)
+            {
+                @* Empty State for non-today dates *@
+                <div class="flex-1 flex items-center justify-center py-16">
+                    <BbEmpty Title="No tasks scheduled"
+                             Description="@($"You have no tasks scheduled for {_selectedDate?.ToString("MMMM d")}. Enjoy your free time!")">
+                        <Icon>
+                            <LucideIcon Name="calendar-check" class="h-10 w-10" />
+                        </Icon>
+                        <ChildContent>
+                            <BbButton Variant="ButtonVariant.Outline" @onclick="() => _selectedDate = DateTime.Today">
+                                <LucideIcon Name="arrow-left" class="mr-2 h-4 w-4" />
+                                Back to Today
+                            </BbButton>
+                        </ChildContent>
+                    </BbEmpty>
+                </div>
+            }
+            else if (_viewMode == "board")
+            {
+                @* Board View *@
+                <div class="flex items-center gap-2 text-muted-foreground">
+                    <LucideIcon Name="circle-check" class="h-4 w-4" />
+                    <span class="text-sm">7 tasks</span>
+                </div>
+                <div class="flex gap-4 overflow-x-auto pb-4">
+                    @* High Priority Column *@
+                    <div class="space-y-3 min-w-[280px] w-[280px] md:min-w-0 md:w-auto md:flex-1 shrink-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-semibold">High</span>
+                            <span class="text-xs text-muted-foreground">3</span>
+                        </div>
+                        <BbCard Class="p-3 space-y-2">
+                            <div class="flex items-start gap-2.5">
+                                <div class="mt-0.5 h-4 w-4 rounded-full border-2 border-red-500 shrink-0"></div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium">Design new landing page</p>
+                                    <div class="flex items-center gap-2 mt-1.5 text-muted-foreground">
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                            Today
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="inbox" class="h-3 w-3" />
+                                            Inbox
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </BbCard>
+                        <BbCard Class="p-3 space-y-2">
+                            <div class="flex items-start gap-2.5">
+                                <div class="mt-0.5 h-4 w-4 rounded-full border-2 border-red-500 shrink-0"></div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium">Implement user authentication</p>
+                                    <p class="text-xs text-muted-foreground mt-0.5 line-clamp-1">Add OAuth2 login with Google and GitHub providers</p>
+                                    <div class="flex items-center gap-2 mt-1.5 text-muted-foreground">
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                            Today
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="message-square" class="h-3 w-3" />
+                                            1
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="inbox" class="h-3 w-3" />
+                                            Inbox
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </BbCard>
+                        <BbCard Class="p-3 space-y-2">
+                            <div class="flex items-start gap-2.5">
+                                <div class="mt-0.5 h-4 w-4 rounded-full border-2 border-red-500 shrink-0"></div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium">Write API documentation</p>
+                                    <p class="text-xs text-muted-foreground mt-0.5 line-clamp-1">Document all REST endpoints with examples</p>
+                                    <div class="flex items-center gap-2 mt-1.5 text-muted-foreground">
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                            Today
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="inbox" class="h-3 w-3" />
+                                            Inbox
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </BbCard>
+                        @if (_boardAddColumn == "high")
+                        {
+                            <BbCard Class="p-3 space-y-2.5">
+                                <div class="space-y-1">
+                                    <BbInput Placeholder="Task name" Class="border-none shadow-none h-7 text-xs font-medium focus-visible:ring-0 px-2 bg-muted/50 rounded" />
+                                    <BbInput Placeholder="Description" Class="border-none shadow-none h-6 text-xs text-muted-foreground focus-visible:ring-0 px-2 bg-muted/50 rounded" />
+                                </div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <BbBadge Variant="BadgeVariant.Outline" Class="h-6 text-[10px] gap-1 pl-1.5 pr-1 font-normal">
+                                        <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                        Today
+                                        <button class="ml-0.5 hover:text-foreground"><LucideIcon Name="x" class="h-2.5 w-2.5" /></button>
+                                    </BbBadge>
+                                    <BbBadge Variant="BadgeVariant.Outline" Class="h-6 text-[10px] gap-1 pl-1.5 pr-1 font-normal">
+                                        <LucideIcon Name="flag" class="h-3 w-3 text-tag-red-foreground" />
+                                        P1
+                                        <button class="ml-0.5 hover:text-foreground"><LucideIcon Name="x" class="h-2.5 w-2.5" /></button>
+                                    </BbBadge>
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                        <LucideIcon Name="clock" class="h-3.5 w-3.5" />
+                                    </BbButton>
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                        <LucideIcon Name="tag" class="h-3.5 w-3.5" />
+                                    </BbButton>
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                        <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                    </BbButton>
+                                </div>
+                                <BbSeparator />
+                                <div class="flex items-center justify-between">
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Small" Class="h-7 text-xs gap-1.5">
+                                        <LucideIcon Name="inbox" class="h-3.5 w-3.5" />
+                                        Inbox
+                                        <LucideIcon Name="chevron-down" class="h-3 w-3 text-muted-foreground" />
+                                    </BbButton>
+                                    <div class="flex items-center gap-1.5">
+                                        <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-7 w-7" @onclick="() => _boardAddColumn = null">
+                                            <LucideIcon Name="x" class="h-4 w-4" />
+                                        </BbButton>
+                                        <BbButton Size="ButtonSize.Icon" Class="h-7 w-7">
+                                            <LucideIcon Name="send" class="h-3.5 w-3.5" />
+                                        </BbButton>
+                                    </div>
+                                </div>
+                            </BbCard>
+                        }
+                        else
+                        {
+                            <button class="w-full flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer group py-1" @onclick="@(() => _boardAddColumn = "high")">
+                                <LucideIcon Name="plus" class="h-3.5 w-3.5" />
+                                <span>Add task</span>
+                            </button>
+                        }
+                    </div>
+                    @* Medium Priority Column *@
+                    <div class="space-y-3 min-w-[280px] w-[280px] md:min-w-0 md:w-auto md:flex-1 shrink-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-semibold">Medium</span>
+                            <span class="text-xs text-muted-foreground">2</span>
+                        </div>
+                        <BbCard Class="p-3 space-y-2">
+                            <div class="flex items-start gap-2.5">
+                                <div class="mt-0.5 h-4 w-4 rounded-full border-2 border-orange-500 shrink-0"></div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium">Set up CI/CD pipeline</p>
+                                    <p class="text-xs text-muted-foreground mt-0.5 line-clamp-1">Configure GitHub Actions for automated testing and deployment</p>
+                                    <div class="flex items-center gap-2 mt-1.5 text-muted-foreground">
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                            Today
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="message-square" class="h-3 w-3" />
+                                            1
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="inbox" class="h-3 w-3" />
+                                            Inbox
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </BbCard>
+                        <BbCard Class="p-3 space-y-2">
+                            <div class="flex items-start gap-2.5">
+                                <div class="mt-0.5 h-4 w-4 rounded-full border-2 border-orange-500 shrink-0"></div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium">Database migration scripts</p>
+                                    <p class="text-xs text-muted-foreground mt-0.5 line-clamp-1">Create migration for new user roles schema</p>
+                                    <div class="flex items-center gap-2 mt-1.5 text-muted-foreground">
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                            Today
+                                        </span>
+                                        <span class="flex items-center gap-1 text-[10px]">
+                                            <LucideIcon Name="inbox" class="h-3 w-3" />
+                                            Inbox
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </BbCard>
+                        @if (_boardAddColumn == "medium")
+                        {
+                            <BbCard Class="p-3 space-y-2.5">
+                                <div class="space-y-1">
+                                    <BbInput Placeholder="Task name" Class="border-none shadow-none h-7 text-xs font-medium focus-visible:ring-0 px-2 bg-muted/50 rounded" />
+                                    <BbInput Placeholder="Description" Class="border-none shadow-none h-6 text-xs text-muted-foreground focus-visible:ring-0 px-2 bg-muted/50 rounded" />
+                                </div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <BbBadge Variant="BadgeVariant.Outline" Class="h-6 text-[10px] gap-1 pl-1.5 pr-1 font-normal">
+                                        <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                        Today
+                                        <button class="ml-0.5 hover:text-foreground"><LucideIcon Name="x" class="h-2.5 w-2.5" /></button>
+                                    </BbBadge>
+                                    <BbBadge Variant="BadgeVariant.Outline" Class="h-6 text-[10px] gap-1 pl-1.5 pr-1 font-normal">
+                                        <LucideIcon Name="flag" class="h-3 w-3 text-tag-amber-foreground" />
+                                        P2
+                                        <button class="ml-0.5 hover:text-foreground"><LucideIcon Name="x" class="h-2.5 w-2.5" /></button>
+                                    </BbBadge>
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                        <LucideIcon Name="clock" class="h-3.5 w-3.5" />
+                                    </BbButton>
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                        <LucideIcon Name="tag" class="h-3.5 w-3.5" />
+                                    </BbButton>
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                        <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                    </BbButton>
+                                </div>
+                                <BbSeparator />
+                                <div class="flex items-center justify-between">
+                                    <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Small" Class="h-7 text-xs gap-1.5">
+                                        <LucideIcon Name="inbox" class="h-3.5 w-3.5" />
+                                        Inbox
+                                        <LucideIcon Name="chevron-down" class="h-3 w-3 text-muted-foreground" />
+                                    </BbButton>
+                                    <div class="flex items-center gap-1.5">
+                                        <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-7 w-7" @onclick="() => _boardAddColumn = null">
+                                            <LucideIcon Name="x" class="h-4 w-4" />
+                                        </BbButton>
+                                        <BbButton Size="ButtonSize.Icon" Class="h-7 w-7">
+                                            <LucideIcon Name="send" class="h-3.5 w-3.5" />
+                                        </BbButton>
+                                    </div>
+                                </div>
+                            </BbCard>
+                        }
+                        else
+                        {
+                            <button class="w-full flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer group py-1" @onclick="@(() => _boardAddColumn = "medium")">
+                                <LucideIcon Name="plus" class="h-3.5 w-3.5" />
+                                <span>Add task</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                @* List View *@
+                @* To Do Section *@
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="h-2 w-2 rounded-full bg-blue-500"></div>
+                        <h3 class="text-sm font-semibold">To Do</h3>
+                        <BbBadge Variant="BadgeVariant.Secondary" Class="text-[10px] h-4 px-1.5">5</BbBadge>
+                    </div>
+                    <BbCard>
+                        <div class="divide-y">
+                            @* Task Item 1 *@
+                            <BbItem>
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle>Design new landing page</BbItemTitle>
+                                    <BbItemDescription>Create wireframes and mockups for the homepage redesign</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <div class="flex items-center gap-2">
+                                        <BbBadge Class="text-[10px] px-1.5 py-0 h-5 bg-tag-red text-tag-red-foreground hover:bg-tag-red">High</BbBadge>
+                                        <span class="text-xs text-muted-foreground hidden sm:inline">Jan 20</span>
+                                        <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                            <BbAvatarFallback Class="text-[10px] bg-tag-blue text-tag-blue-foreground">SC</BbAvatarFallback>
+                                        </BbAvatar>
+                                        <BbDropdownMenu>
+                                            <BbDropdownMenuTrigger>
+                                                <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                                    <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                                </BbButton>
+                                            </BbDropdownMenuTrigger>
+                                            <BbDropdownMenuContent Align="PopoverAlign.End">
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="pencil" class="mr-2 h-4 w-4" />
+                                                    Edit
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="arrow-right" class="mr-2 h-4 w-4" />
+                                                    Move to...
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuSeparator />
+                                                <BbDropdownMenuItem Class="text-destructive focus:text-destructive">
+                                                    <LucideIcon Name="trash-2" class="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </BbDropdownMenuItem>
+                                            </BbDropdownMenuContent>
+                                        </BbDropdownMenu>
+                                    </div>
+                                </BbItemActions>
+                            </BbItem>
+
+                            @* Task Item 2 *@
+                            <BbItem>
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle>Set up CI/CD pipeline</BbItemTitle>
+                                    <BbItemDescription>Configure GitHub Actions for automated testing and deployment</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <div class="flex items-center gap-2">
+                                        <BbBadge Class="text-[10px] px-1.5 py-0 h-5 bg-tag-amber text-tag-amber-foreground hover:bg-tag-amber">Medium</BbBadge>
+                                        <span class="text-xs text-muted-foreground hidden sm:inline">Jan 22</span>
+                                        <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                            <BbAvatarFallback Class="text-[10px] bg-tag-green text-tag-green-foreground">MR</BbAvatarFallback>
+                                        </BbAvatar>
+                                        <BbDropdownMenu>
+                                            <BbDropdownMenuTrigger>
+                                                <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                                    <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                                </BbButton>
+                                            </BbDropdownMenuTrigger>
+                                            <BbDropdownMenuContent Align="PopoverAlign.End">
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="pencil" class="mr-2 h-4 w-4" />
+                                                    Edit
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="arrow-right" class="mr-2 h-4 w-4" />
+                                                    Move to...
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuSeparator />
+                                                <BbDropdownMenuItem Class="text-destructive focus:text-destructive">
+                                                    <LucideIcon Name="trash-2" class="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </BbDropdownMenuItem>
+                                            </BbDropdownMenuContent>
+                                        </BbDropdownMenu>
+                                    </div>
+                                </BbItemActions>
+                            </BbItem>
+
+                            @* Task Item 3 *@
+                            <BbItem>
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle>Write API documentation</BbItemTitle>
+                                    <BbItemDescription>Document all REST endpoints with examples</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <div class="flex items-center gap-2">
+                                        <BbBadge Class="text-[10px] px-1.5 py-0 h-5 bg-tag-green text-tag-green-foreground hover:bg-tag-green">Low</BbBadge>
+                                        <span class="text-xs text-muted-foreground hidden sm:inline">Jan 25</span>
+                                        <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                            <BbAvatarFallback Class="text-[10px] bg-tag-violet text-tag-violet-foreground">EW</BbAvatarFallback>
+                                        </BbAvatar>
+                                        <BbDropdownMenu>
+                                            <BbDropdownMenuTrigger>
+                                                <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                                    <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                                </BbButton>
+                                            </BbDropdownMenuTrigger>
+                                            <BbDropdownMenuContent Align="PopoverAlign.End">
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="pencil" class="mr-2 h-4 w-4" />
+                                                    Edit
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="arrow-right" class="mr-2 h-4 w-4" />
+                                                    Move to...
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuSeparator />
+                                                <BbDropdownMenuItem Class="text-destructive focus:text-destructive">
+                                                    <LucideIcon Name="trash-2" class="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </BbDropdownMenuItem>
+                                            </BbDropdownMenuContent>
+                                        </BbDropdownMenu>
+                                    </div>
+                                </BbItemActions>
+                            </BbItem>
+                        </div>
+                        @* Quick Add *@
+                        @if (_showAddTask)
+                        {
+                            <div class="p-2 border-t">
+                                <div class="rounded-lg border p-3 space-y-2">
+                                    <BbInput Placeholder="Task name" Class="border-none shadow-none h-7 text-xs font-medium focus-visible:ring-0 px-2 bg-muted/50 rounded" />
+                                    <BbInput Placeholder="Description" Class="border-none shadow-none h-6 text-xs text-muted-foreground focus-visible:ring-0 px-2 bg-muted/50 rounded" />
+                                    <div class="flex items-center gap-1.5 pt-1">
+                                        <BbButton Variant="ButtonVariant.Outline" Size="ButtonSize.Small" Class="h-6 text-[10px] gap-1 px-2">
+                                            <LucideIcon Name="calendar" class="h-3 w-3 text-green-600" />
+                                            Today
+                                        </BbButton>
+                                        <BbButton Variant="ButtonVariant.Outline" Size="ButtonSize.Small" Class="h-6 text-[10px] gap-1 px-2">
+                                            <LucideIcon Name="flag" class="h-3 w-3 text-tag-amber-foreground" />
+                                            P2
+                                        </BbButton>
+                                        <BbButton Variant="ButtonVariant.Outline" Size="ButtonSize.Small" Class="h-6 text-[10px] gap-1 px-2">
+                                            <LucideIcon Name="clock" class="h-3 w-3" />
+                                            Reminders
+                                        </BbButton>
+                                        <BbButton Variant="ButtonVariant.Outline" Size="ButtonSize.Small" Class="h-6 text-[10px] gap-1 px-2">
+                                            <LucideIcon Name="tag" class="h-3 w-3" />
+                                            Labels
+                                        </BbButton>
+                                        <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                            <LucideIcon Name="ellipsis" class="h-3 w-3" />
+                                        </BbButton>
+                                    </div>
+                                    <BbSeparator />
+                                    <div class="flex items-center justify-between">
+                                        <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Small" Class="h-7 text-xs gap-1.5">
+                                            <LucideIcon Name="inbox" class="h-3.5 w-3.5" />
+                                            Inbox
+                                            <LucideIcon Name="chevron-down" class="h-3 w-3 text-muted-foreground" />
+                                        </BbButton>
+                                        <div class="flex items-center gap-2">
+                                            <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Small" Class="h-7 text-xs" @onclick="() => _showAddTask = false">Cancel</BbButton>
+                                            <BbButton Size="ButtonSize.Small" Class="h-7 text-xs">Add task</BbButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <button class="w-full p-2 border-t flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer group" @onclick="() => _showAddTask = true">
+                                <LucideIcon Name="plus" class="h-3.5 w-3.5 group-hover:text-primary" />
+                                <span>Add task</span>
+                            </button>
+                        }
+                    </BbCard>
+                </div>
+
+                @* In Progress Section *@
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="h-2 w-2 rounded-full bg-yellow-500"></div>
+                        <h3 class="text-sm font-semibold">In Progress</h3>
+                        <BbBadge Variant="BadgeVariant.Secondary" Class="text-[10px] h-4 px-1.5">3</BbBadge>
+                    </div>
+                    <BbCard>
+                        <div class="divide-y">
+                            <BbItem>
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle>Implement user authentication</BbItemTitle>
+                                    <BbItemDescription>Add OAuth2 login with Google and GitHub providers</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <div class="flex items-center gap-2">
+                                        <BbBadge Class="text-[10px] px-1.5 py-0 h-5 bg-tag-red text-tag-red-foreground hover:bg-tag-red">High</BbBadge>
+                                        <BbSpinner Class="h-3.5 w-3.5 text-yellow-500" />
+                                        <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                            <BbAvatarFallback Class="text-[10px] bg-tag-amber text-tag-amber-foreground">JK</BbAvatarFallback>
+                                        </BbAvatar>
+                                        <BbDropdownMenu>
+                                            <BbDropdownMenuTrigger>
+                                                <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                                    <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                                </BbButton>
+                                            </BbDropdownMenuTrigger>
+                                            <BbDropdownMenuContent Align="PopoverAlign.End">
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="pencil" class="mr-2 h-4 w-4" />
+                                                    Edit
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="arrow-right" class="mr-2 h-4 w-4" />
+                                                    Move to...
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuSeparator />
+                                                <BbDropdownMenuItem Class="text-destructive focus:text-destructive">
+                                                    <LucideIcon Name="trash-2" class="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </BbDropdownMenuItem>
+                                            </BbDropdownMenuContent>
+                                        </BbDropdownMenu>
+                                    </div>
+                                </BbItemActions>
+                            </BbItem>
+                            <BbItem>
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle>Database migration scripts</BbItemTitle>
+                                    <BbItemDescription>Create migration for new user roles schema</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <div class="flex items-center gap-2">
+                                        <BbBadge Class="text-[10px] px-1.5 py-0 h-5 bg-tag-amber text-tag-amber-foreground hover:bg-tag-amber">Medium</BbBadge>
+                                        <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                            <BbAvatarFallback Class="text-[10px] bg-tag-blue text-tag-blue-foreground">SC</BbAvatarFallback>
+                                        </BbAvatar>
+                                        <BbDropdownMenu>
+                                            <BbDropdownMenuTrigger>
+                                                <BbButton Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-6 w-6">
+                                                    <LucideIcon Name="ellipsis" class="h-3.5 w-3.5" />
+                                                </BbButton>
+                                            </BbDropdownMenuTrigger>
+                                            <BbDropdownMenuContent Align="PopoverAlign.End">
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="pencil" class="mr-2 h-4 w-4" />
+                                                    Edit
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuItem>
+                                                    <LucideIcon Name="arrow-right" class="mr-2 h-4 w-4" />
+                                                    Move to...
+                                                </BbDropdownMenuItem>
+                                                <BbDropdownMenuSeparator />
+                                                <BbDropdownMenuItem Class="text-destructive focus:text-destructive">
+                                                    <LucideIcon Name="trash-2" class="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </BbDropdownMenuItem>
+                                            </BbDropdownMenuContent>
+                                        </BbDropdownMenu>
+                                    </div>
+                                </BbItemActions>
+                            </BbItem>
+                        </div>
+                    </BbCard>
+                </div>
+
+                @* Done Section *@
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="h-2 w-2 rounded-full bg-green-500"></div>
+                        <h3 class="text-sm font-semibold">Done</h3>
+                        <BbBadge Variant="BadgeVariant.Secondary" Class="text-[10px] h-4 px-1.5">12</BbBadge>
+                    </div>
+                    <BbCard>
+                        <div class="divide-y">
+                            <BbItem Class="opacity-60">
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox Checked="true" />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle Class="line-through">Set up project repository</BbItemTitle>
+                                    <BbItemDescription>Initialize Git repo with CI/CD templates</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                        <BbAvatarFallback Class="text-[10px] bg-tag-green text-tag-green-foreground">MR</BbAvatarFallback>
+                                    </BbAvatar>
+                                </BbItemActions>
+                            </BbItem>
+                            <BbItem Class="opacity-60">
+                                <BbItemMedia Variant="ItemMediaVariant.Icon">
+                                    <BbCheckbox Checked="true" />
+                                </BbItemMedia>
+                                <BbItemContent>
+                                    <BbItemTitle Class="line-through">Define tech stack</BbItemTitle>
+                                    <BbItemDescription>Choose frameworks, libraries, and hosting</BbItemDescription>
+                                </BbItemContent>
+                                <BbItemActions>
+                                    <BbAvatar Size="AvatarSize.Small" Class="h-6 w-6">
+                                        <BbAvatarFallback Class="text-[10px] bg-tag-blue text-tag-blue-foreground">SC</BbAvatarFallback>
+                                    </BbAvatar>
+                                </BbItemActions>
+                            </BbItem>
+                        </div>
+                    </BbCard>
+                </div>
+
+            }
+        </div>
+    </BbSidebarInset>
+</BbSidebarProvider>
+
+@code {
+    private bool _showAddTask;
+    private string? _viewMode = "list";
+    private string? _boardAddColumn;
+    private DateTime? _selectedDate = DateTime.Today;
+
+    private string DateHeading => _selectedDate?.Date == DateTime.Today
+        ? "Today"
+        : _selectedDate?.ToString("dddd, MMMM d") ?? "Today";
+}
+@* <BbToastProvider Position="ToastPosition.BottomRight" /> *@
+@* <BbDialogProvider /> *@
+@* <BbPortalHost /> *@
